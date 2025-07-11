@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <!-- 必須要素 -->
+        <meta charset="utf-8">
+        <title>tlks_open_serialsock | lib_tlks_qrserial</title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="format-detection" content="telephone=no">
+        
+        <link rel="stylesheet" href="../../style.css">
+        <link rel="icon" href="favicon.ico">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
+
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:site" content="@OECU_CRC" />
+        <meta name="twitter:title" content="tlks_open_serialsock | lib_tlks_qrserial" />
+
+        
+        <meta http-equiv="Content-Style-Type" content="text/css" />
+        <meta http-equiv="Content-Script-Type" content="text/javascript" />
+
+        <link rel="apple-touch-icon-precomposed" href="./image/logo_back_white.png" />
+
+        <meta http-equiv="Pragma" content="no-cache">
+        <meta http-equiv="Cache-Control" content="no-cache">
+
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZHSQC47H50"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-ZHSQC47H50');
+        </script>
+
+        <style>
+            /* 横幅を指定するための要素 */
+            .map-wrap {
+                max-width: 100%; /* ここに横幅を指定 */
+                max-width: 600px;
+            }
+            
+            /* Google Mapを囲う要素 */
+            .map {
+                position: relative;
+                width: 100%;
+                height: 0;
+                padding-top: 75%; /* 比率を4:3に固定 */
+            }
+            
+            /* Google Mapのiframe */
+            .map iframe {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+
+            .grid_wrapper {
+                display: grid;
+                text-align: center;
+                grid-template-columns: 33% 33% 33%;
+                grid-template-rows: 120px 120px;
+                font-size: 14px;
+                margin-top: 2em;
+                margin-bottom: 2em;
+            }
+
+            .logo-shadow{
+                box-shadow: 0 5px 15px 0 rgba(0, 0, 0, .2);
+                width: 50px;
+                height: 50px;
+                text-align:center;
+                padding: 10px;
+                border-radius: 40px;
+            }
+        </style>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script>
+    </head>
+    <body class="backgroud_image">
+        <header class="fixed-header">
+            <a style="color: #000000" href="../../index.html"><h2>Tlooks Dev</h2></a>
+            <div class="menu">
+                <a class="menu-link" href="https://github.com/nkiib">GitHub</a> 
+                <a class="menu-link" href="https://nishikiout.com">WebSite</a>
+                <a class="menu-link" href="../../index.html">TopPage</a>
+            </div> 
+        </header>
+
+        
+        <div id="main-wrapper">
+
+            <div id="entry-title">
+                <h1>tlks_open_serialsock()</h1>
+                <p>lib_tlks_qrserial</p>
+            </div>
+
+            <div id="main-content" style="text-align: left;">
+                <h1>概要</h1>
+
+                <p><code>tlks_open_serialsock</code>は、指定したシリアルデバイスと通信するためのソケットを確保する関数です。</p>
+
+                <h1>注意</h1>
+
+                <p>この関数で確保したソケットは、<code>tlks_close_serialsock</code>関数を使用して解放する必要があります。</p>
+
+                <h2>依存</h2>
+
+                <p>POSIX準拠</p>
+
+                <h1>関数の定義</h1>
+
+                <pre><code class="c">
+#include "header/tlks_sock.h"
+#include "header/tlks_qrserial.h"
+
+int tlks_open_serialsock(int *fd, char *device_path, speed_t baudrate);
+                </code></pre>
+
+                <h1>引数</h1>
+
+                <table><thead>
+                <tr>
+                    <th>引数名</th>
+                    <th>型</th>
+                    <th>in/out</th>
+                    <th>役割</th>
+                </tr></thead>
+                <tbody>
+                <tr>
+                    <td>fd</td>
+                    <td>int*</td>
+                    <td>out</td>
+                    <td>確保したファイルディスクリプタを格納する変数</td>
+                </tr>
+                <tr>
+                    <td>device_path</td>
+                    <td>char*</td>
+                    <td>in</td>
+                    <td>シリアルデバイスのパスを格納するポインタ </td>
+                </tr>
+                <tr>
+                    <td>baudrate</td>
+                    <td>speed_t</td>
+                    <td>in</td>
+                    <td>ボーレート</td>
+                </tr>
+                </tbody>
+</table>
+                <h1>戻り値</h1>
+
+                <p>成功時は0を返し、失敗時は負の値でエラーコードを返します。</p>
+
+                <h2>エラーコード</h2>
+
+                <table><thead>
+                <tr>
+                    <th>戻り値</th>
+                    <th>内容</th>
+                    <th>定義</th>
+                </tr></thead>
+                <tbody>
+                <tr>
+                    <td>0</td>
+                    <td>成功</td>
+                    <td>関数内</td>
+                </tr>
+                <tr>
+                    <td rowspan="2">-EINVAL</td>
+                    <td>引数が不正（NULLが渡された）</td>
+                    <td>関数内</td>
+                </tr>
+                <tr>
+                    <td>アクセス権限がありません</td>
+                    <td>open</td>
+                </tr>
+                <tr>
+                    <td>-EBADF</td>
+                    <td>ファイルディスクリプタが不正です。</td>
+                    <td>open</td>
+                </tr>
+                <tr>
+                    <td>-EBUSY</td>
+                    <td>使用中のブロックデバイスに O_EXCL でアクセスしました</td>
+                    <td>open</td>
+                </tr>
+                <tr>
+                    <td>-EDQUOT</td>
+                    <td>ユーザに割り当てられた容量が不足しています。</td>
+                    <td>open</td>
+                </tr>
+                <tr>
+                    <td>-ENOSPC</td>
+                    <td>ストレージの容量が不足しています。</td>
+                    <td>open</td>
+                </tr>
+                <tr>
+                    <td>-EEXIST</td>
+                    <td>ファイルが既に存在しており、O_CREAT と O_EXCL が指定されている。 </td>
+                    <td>open</td>
+                </tr>
+                <tr>
+                    <td>-EFAULT</td>
+                    <td>パス名がアクセス可能なメモリ空間外を指定しています。</td>
+                    <td>open</td>
+                </tr>
+                <tr>
+                    <td>-EINTR</td>
+                    <td>openがシグナルにより中断されました。 </td>
+                    <td>open</td>
+                </tr>
+                </tbody></table>
+
+                <p>その他、<code>open</code>関数が返すエラーについては、<a href="https://man7.org/linux/man-pages/man2/open.2.html" title="open(2) - Linux manual page">open(2) - Linux manual page</a>を参照してください。</p>
+
+                <h1>サンプルコード</h1>
+
+                <pre><code class="c">
+#include "header/tlks_qrserial.h"
+#include &lt;stdio.h&gt;
+#include &lt;unistd.h&gt;
+
+int main(void) {
+    int fd = -1;
+    int retval = 0;
+    char device_path[] = "/dev/serial/by-id/usb-DENSO_WAVE_INC._USB_Device-if00";
+    speed_t baudrate = B9600;
+    char buf[256];
+
+    // QRコードのシリアル通信を初期化
+    retval = tlks_open_serialsock(&fd, device_path, baudrate);
+    if (retval != 0) {
+        fprintf(stderr, "初期化失敗: %d\n", retval);
+        return 1;
+    }
+
+    printf("QRコードシリアル通信が初期化されました。fd=%d\n", fd);
+
+    // コマンドを送信
+    tlks_send_command(fd, "ID2\r\n");
+
+    tlks_read_signal(fd, buf, 256);
+
+    printf("受信: %s\n", buf);
+
+    tlks_close_serialsock(&fd);
+    return 0;
+}
+                </code></pre>
+            </div>
+        </div>
+        <div id="footer">
+            <div id="copyright">
+                &copy;2025 Tlooks All rights reserved.<br>
+                <small><a href="https://www.svgbackgrounds.com/set/free-svg-backgrounds-and-patterns/">Free SVG Backgrounds and Patterns by SVGBackgrounds.com</a></small>
+            </div>
+        </div>
+
+    </body>
+</html>
